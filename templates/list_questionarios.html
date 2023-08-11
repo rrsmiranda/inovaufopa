@@ -1,0 +1,155 @@
+{% extends "admin.html" %}
+{% block body %}
+    <div class="container-fluid pb-5">
+        <div class="row">
+            <div class="col-sm">
+                <h5 class="text-center">Dimensões por ano</h5>
+                <div id="radarChart" class="pb-2 d-flex justify-content-center"></div>
+            </div>
+            <div class="col-sm">
+                <h5 class="text-center">Repostas por ano</h5>
+                <div id="chart-row-respostas" class="pb-2 d-flex justify-content-center"></div>
+            </div>
+            <div class="col-sm">
+                <h5 class="text-center">Repostas por cargo</h5>
+                <div id="chart-row-cargo" class="pb-2 d-flex justify-content-center"></div>
+            </div>
+            
+        </div>
+    </div>
+    <button class="btn btn-sm btn-success float-right" data-toggle="modal" data-target=".form-questionario">Novo</button>
+    <h3>{{titulo}}</h3>
+    
+    <div class="py-3 table-responsive">
+    <table class="table table-striped table-sm table-headless">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Título</th>
+            <th>Início</th>
+            <th>Fim</th>
+            <!-- <th></th> -->
+        </tr>
+        </thead>
+        <tbody>
+            {% for item in list %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ item.titulo }}</td>
+                <td>{{ item.inicio.strftime('%d/%m/%Y') }}</td>
+                <td>{{ item.fim.strftime('%d/%m/%Y') }}</td>
+                <!-- <td class="float-right p-1"> -->
+                    <!-- <a href="/panel/questionarios/{{item.id}}" class="btn btn-sm btn-outline-secondary" title="ver"><span data-feather="eye"></span></a> -->
+                    <!-- <button class="btn btn-sm btn-outline-secondary" title="editar"><span data-feather="edit"></span></button>
+                    <button class="btn btn-sm btn-outline-danger" title="deletar"><span data-feather="trash"></span></button> -->
+                <!-- </td> -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {%if not list %}
+    <div class="table-empty">
+        Nenhum resultado encontrado
+    </div>
+    {% endif %}
+    </div>
+    {% include "includes/pagination.html" %}
+    <div class="container">
+        <!-- Modal -->
+    <div class="modal fade form-questionario" tabindex="-1" role="dialog" aria-labelledby="form-questionario" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Lançar Novo Questionário</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="post">
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="titulo">Titulo</label>
+                    <input type="text" class="form-control" name="titulo" id="titulo" aria-describedby="titulo" placeholder="digite o titulo">
+                    <!-- <small id="tituloHelp" class="form-text text-muted"></small> -->
+                </div>
+                <div class="form-group">
+                    <label for="ano">Ano</label>
+                    <input type="text" maxlength="4" pattern="\d{4}" class="form-control" name="ano"  id="ano" aria-describedby="ano" placeholder="digite o ano">
+                </div>
+                <div class="form-group">
+                    <label for="descricao">Descrição</label>
+                    <input type="text" class="form-control" name="descricao"  id="descricao" aria-describedby="descricao" placeholder="digite a descrição">
+                </div>
+                <div class="form-group">
+                    <label for="inicio">Início</label>
+                    <input type="text" pattern="\d{1,2}/\d{1,2}/\d{4}" class="form-control"  name="inicio" id="inicio" aria-describedby="inicio" placeholder="digite a data de início">
+                    <small id="inicioHelp" class="form-text text-muted">o formato deve seguir o exemplo a seguir. ex: 23/05/2023</small>
+                </div>
+                <div class="form-group">
+                    <label for="fim">Fim</label>
+                    <input type="text" pattern="\d{1,2}/\d{1,2}/\d{4}" class="form-control" name="fim" id="fim" aria-describedby="fim" placeholder="digite a data fim">
+                    <small id="fimHelp" class="form-text text-muted">o formato deve seguir o exemplo a seguir. ex: 23/05/2023</small>
+                </div>
+
+                <div class="form-group">
+                <select class="form-control" name="status" required>
+                    <option value="ATIVO" selected>Ativo</option>
+                    <option value="INATIVO">Inativo</option>
+                 </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script>
+    const respostarByAno = {{respostas_by_ano|tojson|safe }}
+    const cargoByRespostas = {{cargo_by_respostas|tojson|safe }}
+    const dadosgerais = {{gerais|tojson|safe }}
+
+    var respostasChart = new dc.RowChart("#chart-row-respostas")
+    var ndxC = crossfilter(respostarByAno)
+    allss = ndxC.groupAll()
+
+    resDim = ndxC.dimension(function (d) {
+        return d.axis;
+    });
+    (qtdPerRes = resDim.group().reduceSum(function (d) {
+        return +d.value;
+    }))
+
+    respostasChart
+        .width(350)
+        .height(300)
+        .dimension(resDim)
+        .group(qtdPerRes)
+        .elasticX(true);
+
+    var cargoChart = new dc.RowChart("#chart-row-cargo")
+    var ndxC = crossfilter(cargoByRespostas)
+    allss = ndxC.groupAll()
+
+    cargoDim = ndxC.dimension(function (d) {
+        return d.axis;
+    });
+    (qtdPerCargo = cargoDim.group().reduceSum(function (d) {
+        return +d.value;
+    }))
+
+    cargoChart
+        .width(350)
+        .height(300)
+        .dimension(cargoDim)
+        .group(qtdPerCargo)
+        .elasticX(true);
+    dc.renderAll();
+</script>
+
+{% endblock %}

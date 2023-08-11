@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="fabiano">
+    <title>Questionário</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-icons.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    
+    <div class="container">
+      {% include "includes/navbar.html" %}
+      <!-- Modal -->
+      <div class="modal fade" id="modalajuda" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Informações</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              escrever aqui informacoes como contato e talz...
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="jumbotron">
+        <div class="container d-flex flex-column flex-md-row">
+          <div class="col-12 col-md-8">
+          <h2>{{questionario.titulo}}</h2>
+          <p>{{questionario.descricao}}</p>
+          </div>
+          
+        </div>
+      </div>
+      <div class="container">
+        <!-- <h3>Explore os dados</h>
+        <p class="lead text-muted">Um estudo com base nas dimensôes de inovação foi aplicado na instituição visando mensurar a qualidade da cultura da inovação. Agora você pode explorar esses dados e conhecer o atual estado que nossa instituição</p>
+        </div> -->
+        <hr>
+
+        <form action="{{ url_for('save_questionario_resposta',form_id=1) }}" method="POST" class="form">
+        <div class="row py-5">
+          <h3>Dados Institucionais</h3>
+          <p>There are five tiers to the Bootstrap grid system, one for each range of devices we support. Each tier starts at a minimum viewport size and automatically applies to the larger devices unless overridden.</p>
+          <div class="form-group col-12 col-md-4">
+            <label for="exampleFormControlInput1">Nome</label>
+            <input type="text" class="form-control" name="1" placeholder="nome">
+          </div>
+          <div class="form-group col-12 col-md-4">
+            <label for="exampleFormControlInput1">Email</label>
+            <input type="email" class="form-control"  name="2" placeholder="name@example.com">
+          </div>
+          <div class="form-group col-12 col-md-4">
+            <label for="exampleFormControlSelect1">Unidade</label>
+            <select class="form-control" name="3" >
+              <option>CTIC</option>
+              <option>PROAD</option>
+              <option>PROEN</option>
+            </select>
+          </div> 
+
+          <div class="form-group col-12 col-md-4">
+            <label for="exampleFormControlSelect1">Profissão</label>
+            <select class="form-control" name="4" id="exampleFormControlSelect1">
+              <option>Analista</option>
+              <option>Medico</option>
+              <option>Professor</option>
+            </select>
+          </div> 
+          <div class="form-group col-12 col-md-4">
+            <label for="exampleFormControlSelect1">Gênero</label>
+            <select class="form-control" name="5" id="exampleFormControlSelect1">
+              <option>Masculino</option>
+              <option>Feminino</option>
+              <option>Outro</option>
+            </select>
+          </div> 
+        </div>
+        <div class="row py-2 d-block">
+          <h3>Perguntas Dimensionais</h3>
+          <p>As perguntas desse questionario são organizadas ..... sendo que os valores 1= discordo totalmente, 2- discordo parcialmente...</p>
+          
+          {% for dimensao in questionario.dimensoes() %}
+            <h5 class="text-success mt-5">{{ dimensao.titulo }}</h5>
+            {% for grupo in questionario.grupos() %}
+              {% if grupo.dimensao_id == dimensao.id %}
+                <div class="row">
+                  <div class="pl-3 pt-3 pb-2 font-weight-bold">{{ grupo.titulo }}</div> 
+                  {% for pergunta in grupo.perguntas() if pergunta.tipo == 3 %}
+
+                    {% if pergunta.grupo_id == grupo.id %}                      
+                    <div class="d-block d-md-flex p-1 w-100 mb-2 mb-md-0 border-bottom">
+                      <div class="col col-sm-8 pl-3 text-secondary h6" style="font-size:13px">{{ pergunta.titulo }}</div>
+                      <div class="col col-sm-4 input-group justify-content-md-end">
+                        <div>
+                          <input type="radio" class="btn-check d-none" name="{{pergunta.id}}" id="{{pergunta.id}}.1" value="1" autocomplete="off">
+                          <label class="btn-check btn btn-outline-primario m-1" style="padding:0px 6px;font-size:14px" referencia="{{pergunta.id}}" for="{{pergunta.id}}.1">1</label>
+                        </div>
+                        <div>
+                          <input type="radio" class="btn-check d-none" name="{{pergunta.id}}" id="{{pergunta.id}}.2" value="2" autocomplete="off">
+                          <label class="btn-check btn btn-outline-primario m-1" style="padding:0px 6px;font-size:14px" referencia="{{pergunta.id}}" for="{{pergunta.id}}.2">2</label>
+                        </div>
+                        <div>
+                          <input type="radio" class="btn-check d-none" name="{{pergunta.id}}" id="{{pergunta.id}}.3" value="3" autocomplete="off">
+                          <label class="btn-check btn btn-outline-primario m-1" style="padding:0px 6px;font-size:14px" referencia="{{pergunta.id}}" for="{{pergunta.id}}.3">3</label>
+                        </div>
+                        <div>
+                          <input type="radio" class="btn-check d-none" name="{{pergunta.id}}" id="{{pergunta.id}}.4" value="4" autocomplete="off">
+                          <label class="btn-check btn btn-outline-primario m-1" style="padding:0px 6px;font-size:14px" referencia="{{pergunta.id}}" for="{{pergunta.id}}.4">4</label>
+                        </div>
+                        <div>
+                          <input type="radio" class="btn-check d-none" name="{{pergunta.id}}" id="{{pergunta.id}}.5" value="5" autocomplete="off">
+                          <label class="btn-check btn btn-outline-primario m-1" style="padding:0px 6px;font-size:14px" referencia="{{pergunta.id}}" for="{{pergunta.id}}.5">5</label>
+                        </div>
+                      </div>
+
+                          <!-- <td><input type="radio" name="{{pergunta.id}}" value="2" >2</td>
+                          <td><input type="radio" name="{{pergunta.id}}" value="3" >3</td>
+                          <td><input type="radio" name="{{pergunta.id}}" value="4" >4</td>
+                          <td><input type="radio" name="{{pergunta.id}}" value="5" checked>5</td> -->
+                    </div>
+                    {%endif%}
+                    {% endfor %}
+                </div>
+              {%endif%}
+            {% endfor %}
+          {% endfor %}
+        </div>
+
+          <div class="my-4 d-flex justify-content-center">
+            <button type="submit" class="btn btn-block btn-success">Enviar</button>
+          </div>
+        </form>    
+      </div>
+    </div>
+  </body>
+  <hr>
+  <footer class=" text-muted text-center text-small">
+    <p class="mb-1">© 2022 Mensuração da Cultura de Inovação</p>
+    <ul class="list-inline">
+      <li class="list-inline-item"><a href="http://www.ufopa.edu.br/ufopa/">UFOPA</a></li>
+      <li class="list-inline-item"><a href="http://www.ufopa table-headless.edu.br/ctic/">CTIC</a></li>
+      <li class="list-inline-item"><a href="http://www.ufopa.edu.br/ait/">AIT</a></li>
+      <li class="list-inline-item"><a href="http://www.profnit.org.br/pt/sample-page/">PROFNIT</a></li>
+    </ul>
+  </footer>
+
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.5.1.slim.min.js') }}" ></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/bootselfilter.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/dc.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script>
+    $(document).ready(function(){
+      $("label.btn-check").click(function(){
+        let re =  $(this).attr("referencia");
+        $('label.btn-check[referencia='+re+']').removeClass('btn-check-ativo');
+        $(this).addClass('btn-check-ativo');
+      });
+    });
+  </script>
+</html>

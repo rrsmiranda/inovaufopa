@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="fabiano.nhoatto">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>Admin</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dc.css') }}" />
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    
+  </head>
+
+  <body>
+    <nav class="navbar navbar-dark sticky-top flex-md-nowrap p-0" style="background-color: #354359;">
+      <a href="/" class="navbar-brand col-sm-3 col-md-2 mr-0">
+        <img style="margin-top: -6px;" src="{{ url_for('static', filename='img/logo.png') }}" alt="" width="24" height="28">
+        <span class="fs-4 mx-3">DIMENSUR</span>
+      </a>
+      <!-- <a class="navbar-brand col-sm-3 col-md-2 mr-0"href="#">DIMENSUR</a> -->
+      <!-- <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search"> -->
+      <ul class="navbar-nav px-3">
+        <li class="nav-item text-nowrap">
+          <a class="nav-link" href="/logout">Sair</a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+          <div class="sidebar-sticky py-4">
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 pt-3 mb-1 text-muted">
+              <span>Menu</span>
+              <!-- <a class="d-flex align-items-center text-muted" href="#">
+                <span data-feather="plus-circle"></span>
+              </a> -->
+            </h6>
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link {{ 'active' if 'questionarios' in request.endpoint else '' }}" href="/panel/questionarios">
+                  <span data-feather="file-text"></span>
+                  Questionários
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {{ 'active' if 'dimensoes' in request.endpoint else '' }}" href="/panel/dimensoes">
+                  <span data-feather="file-text"></span>
+                  Dimensões
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {{ 'active' if 'grupos' in request.endpoint else '' }}" href="/panel/grupos">
+                  <span data-feather="file-text"></span>
+                  Grupos
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {{ 'active' if 'perguntas' in request.endpoint else '' }}" href="/panel/perguntas">
+                  <span data-feather="clipboard"></span>
+                  Perguntas
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link  {{ 'active' if 'respostas' in request.endpoint else '' }}" href="/panel/respostas">
+                  <span data-feather="clipboard"></span>
+                  Respostas
+                </a>
+              </li>
+            </ul>
+
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+              <span>Relatórios</span>
+              <!-- <a class="d-flex align-items-center text-muted" href="/panel/relatorio/1"> -->
+                <!-- <span data-feather="plus-circle"></span>
+              </a> -->
+            </h6>
+            <ul class="nav flex-column mb-2">
+              <!-- <li class="nav-item">
+                <a class="nav-link" href="#">
+                  <span data-feather="trending-up"></span>
+                  Engajamento
+                </a>
+              </li> -->
+              <li class="nav-item">
+                <a class="nav-link {{ 'active' if 'relatorio' in request.endpoint else '' }}" href="/panel/relatorio/1">
+                  <span data-feather="bar-chart-2"></span>
+                  Relatorio Respostas
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <div class="alert alert-success" role="alert">
+              <ul class="mb-0">
+                {% for message in messages %}
+                  <li>{{ message }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+            {% endif %}
+          {% endwith %}
+          {% block body %}{% endblock %}
+        </main>
+      </div>
+    </div>
+  </body>
+  <footer class="footer" style="border-top: 1px solid #ddd;">
+    <div class="p-2 text-right">
+      <span class="text-muted text-center">© 2022 Mensuração da Cultura de Inovação 2022, todos os direitos reservados</span>
+    </div>
+  </footer>
+
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.5.1.min.js') }}" ></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/d3.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/radar-chart.js') }}"></script>     
+  <script type="text/javascript" src="{{ url_for('static', filename='js/crossfilter.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/dc.js') }}"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.3.0/d3-legend.js" charset="utf-8"></script>
+  <!-- <script type="text/javascript" src="{{ url_for('static', filename='js/chart.min.js') }}"></script> -->
+    <!-- Icons -->
+    <script  src="{{ url_for('static', filename='js/feather.min.js') }}"></script>
+
+    {% block script %}{% endblock %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/script-admin.js') }}"></script>
+    
+    <script>
+      feather.replace()
+    </script>
+    
+</html>

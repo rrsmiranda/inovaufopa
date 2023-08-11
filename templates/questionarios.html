@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="fabiano">
+    <title>Mensuração da Cultura de Inovação</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    
+    {% include "includes/navbar.html" %}
+
+    <div class="container" style="margin-top: 80px;">
+    <h4>{{titulo}}</h4>
+    <div class="pt-1 pb-3 table-responsive painel-content">
+    <table class="table table-sm table-headless">
+        <thead>
+        <tr>
+            <th></th>
+            <th>Título</th>
+            <th>Prazo</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for item in list %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ item.titulo }}</td>
+                <td>{{ item.fim.strftime('%d/%m/%Y') }}</td>
+                <td class="p-0 float-right">
+                    <a href="/questionarios/{{item.id}}" class="btn btn-sm btn-outline-secondary" title="ver">
+                        <span data-feather="arrow-right-circle"></span>
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {%if not list %}
+    <div class="table-empty">
+        Nenhum resultado encontrado
+    </div>
+    {% endif %}
+    {% include "includes/pagination.html" %}
+    </div>
+</div>
+</body>
+<script  src="{{ url_for('static', filename='js/feather.min.js') }}"></script>
+<script>
+    feather.replace()
+  </script>
+</html>

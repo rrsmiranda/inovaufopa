@@ -1,0 +1,19 @@
+{% if pages > 1 %}
+<div aria-label="row">
+  <nav aria-label="navigation float-right">
+    <ul class="pagination">
+    {% if page > 1 %}
+    <li class="page-item"><a class="prev page-link" href="?page={{ page - 1 }}"><<</a></li>
+    {% else %}
+    <li class="page-item disabled"><a class="prev page-link" href=""><<</a></li>
+    {% endif %}
+    <li class="page-item"><a class="page-link" href="">{{ page }}</a></li>
+    {% if page < pages %}
+    <li class="page-item"><a class="next page-link" href="?page={{ page + 1 }}">>></a></li>
+    {% else %}
+    <li class="page-item disabled"><a class="next page-link" href="">>></a></li>
+    {% endif %}
+    </ul>
+  </nav>
+</div>
+{% endif %}

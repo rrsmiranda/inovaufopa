@@ -1,0 +1,100 @@
+body{
+  background-color: #eee;
+}
+.progress-bar{
+  background-color: #7d61e8;
+  /* background-color: #ffa050; */
+}
+.jumbotron{
+  margin-top: 100px;
+  padding: 2rem 1rem;
+  margin-bottom: 2rem;
+  background-color: #7d61e8;
+  border-radius: .3rem;
+  color: white;
+}
+
+.chart-v-align{
+  padding-top: 14%;
+  height: 310px;
+}
+
+.navbar a.text-dark:focus, a.text-dark:hover {
+  text-decoration: none;
+  color: #007bff !important;
+}
+
+.texto-primario{
+  color: #7d61e8;
+}
+.btn-outline-primario:hover {
+  color:#7d61e8;
+}
+.form-group{
+  padding:8px;
+}
+.btn-check-ativo:hover {
+  color:#fff;
+}
+.texto-secundario{
+  color: #00ffbe;
+}
+
+.btn-secundario {
+  color: #fff;
+  background-color: #0ddbb3;
+  border-color: #0ddbb3;
+}
+
+.btn-secundario:hover {
+  color: #fff;
+  background-color: #0ab492;
+  border-color: #0ab492;
+}
+
+.btn-outline-primario{color:#7d61e8;border-color:#7d61e8}.btn-outline-primary:hover{color:#fff;background-color:#7d61e8;border-color:#7d61e8}.btn-outline-primary.focus,.btn-outline-primary:focus{box-shadow:0 0 0 .2rem #371ca0}.btn-outline-primary.disabled,.btn-outline-primary:disabled{color:#7d61e8;background-color:transparent}
+
+.questionario .form-group{
+  padding-left: 5px!important;
+  padding-right: 5px!important;
+}
+
+.pergunta:hover{
+  background-color: rgb(233, 233, 233);
+}
+
+/* .btn-check:checked~.btn-check + label::after {
+  color: #fff;
+  background-color: #7d61e8!important;
+} */
+
+.btn-check-ativo{
+  color: #fff;
+  background-color: #7d61e8!important;
+}
+
+.painel-content{
+  background: #f8f9fa;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.table-sm td {
+  font-size: .8rem;
+}
+
+.table-headless th{
+  border-top: none;
+}
+
+.table td .btn-sm {
+  padding: .20rem .3rem;
+  font-size: .6rem;
+  line-height: 1;
+  border-radius: .2rem;
+  border: none;
+}
+
+.table-minimal td{
+  font-size: 0.9rem;
+}

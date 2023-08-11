@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>Mensuração da Cultura de Inovação</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/dc.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap-icons.css') }}" />
+    <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/select2.min.css') }}" />
+    <link rel="stylesheet" type="text/css"  href="{{ url_for('static', filename='css/select2-bootstrap.min.css') }}" />
+
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    <!-- <div class="container-loader"><div class="lds-ripple"><div></div><div></div></div></div> -->
+    <div class="container">
+      <nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+        <h5 class="my-0 mr-md-auto font-weight-normal">
+          <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+            <img class="" src="{{ url_for('static', filename='img/logo.png') }}" alt="" width="40" height="40">
+            <span class="fs-4 mx-3">DIMENSUR</span>
+          </a>
+        </h5>
+        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+    
+        <div class="collapse navbar-collapse" id="navbarCollapse">
+            <div class="navbar-nav ml-auto">
+              <a class="p-2 text-dark mr-2" href="/questionarios">Questionarios</a>
+              <a class="p-2 text-dark mr-2" type="button" data-toggle="modal" data-target="#modalajuda">Ajuda</a> 
+              <a class="p-2 text-dark" href="/login">Entrar</a>
+            </div>
+        </div>
+    </nav>
+      <!-- Modal -->
+      <div class="modal fade" id="modalajuda" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Informações</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              escrever aqui informacoes como contato e talz...
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="jumbotron">
+        <div class="container d-flex flex-column flex-md-row">
+          <div class="col-12 col-md-8">
+          <h1 class="display-3">Bem vindo</h1>
+          <p>A Mensuração da Cultura de Inovação mede a maturidade do desenvolvimento de uma instituição o caminho rumo à inovação.<p>A mensuração realiza um diagnóstico dos pontos fortes e das lacunas da instituição, e oferece uma orientação aos gestoes para tomarem medidas concretas com o fim de criarem e melhorarem uma cultura de inovação.
+
+            Esta avaliação consiste em 54 perguntas fechadas e uma avaliação final. </p>
+          </div>
+          <div class="col-12 col-md-4">
+            <div id="radarChart" class="pb-2 d-flex justify-content-center"></div>
+          </div>
+        </div>
+      </div>
+      <div class="container text-center p-5">
+        <h3>Explore os dados</h3>
+        <p class="lead text-muted">Um estudo com base nas dimensões de inovação foi aplicado na instituição visando mensurar a qualidade da cultura da inovação. Agora você pode explorar esses dados e conhecer o atual estado que nossa instituição</p>
+      </div>
+      <form id="filtros">
+          <div class="row">
+          <div class="form-group col-12 col-md-3">
+            <select class="select2 form-control" name="ano" id="ano">
+              <option disabled>Ano</option>
+              {% for quest in ano_questionarios%}
+              <option value="{{quest.ano}}">{{quest.ano}}</option>
+              <option value="2021">2021</option>
+              {% endfor%}
+              <!-- <option value="2020">2020</option> -->
+            </select>
+          </div> 
+          <div class="form-group col-12 col-md-3">
+            <select class="select2 form-control" name="unidade[]" multiple="multiple" id="unidade">
+              <option disabled>Unidades</option>
+              {% for u in unidades%}
+              <option value="{{u.id}}">{{u.sigla}}</option>
+              {% endfor%}
+            </select>
+          </div> 
+
+          <div class="form-group col-12 col-md-3">
+            <select class="form-control select2" name="area[]" multiple="multiple" id="area">
+              <option disabled>Áreas</option>
+              {% for a in areas%}
+              <option value="{{a.id}}">{{a.nome}}</option>
+              {% endfor%}
+            </select>
+          </div> 
+
+          <div class="form-group col-12 col-md-3">
+            <select class="form-control select2" name="cargo[]" multiple="multiple" id="cargo">
+              <option disabled>Cargo</option>
+              {% for c in cargo%}
+              <option value="{{c.id}}">{{c.nome}}</option>
+              {% endfor%}
+            </select>
+          </div>
+        </div>
+      </form>
+      <hr class="mb-5">
+      <!-- <div class="row g-5 py-5">
+        <div class="feature col-md-4">
+          <div id="chart-ring-year" class="pb-2 d-flex justify-content-center chart-v-align"></div>
+          <h5>Ano</h5>
+          <p>
+            Neste espaço é possível acompanhar a evolução da cultura de inovação através das mensurações realizadas por ano.
+          </p>
+        </div>
+        <div class="feature col-md-4">
+          <div id="chart-row-setores" class="pb-2 d-flex justify-content-center chart-v-align"></div>
+          <h5>Setores</h5>
+          <p>
+            Paragraph of text beneath the heading to explain the heading. We'll
+            add onto it with another sentence and probably just keep going until
+            we run out of words.
+          </p>
+        </div>        
+        <div class="feature col-md-4">
+          <div id="radarChartSetores" class="pb-2 d-flex justify-content-center"></div>    
+          <h5>Dimensões</h5>
+          <p>
+            Paragraph of text beneath the heading to explain the heading. We'll
+            add onto it with another sentence and probably just keep going until
+            we run out of words.
+          </p>
+        </div>    
+      </div>
+      <hr> -->
+      <h3 class="text-center">Quantitativo por Dimensões</h5>
+      <div class="row g-5 py-5">
+        <div class="feature col-md-4">
+          <div id="chart-row-lid" class="pb-2 d-flex justify-content-center"></div>
+          <h5 class="text-center">Clima</h5>
+          <p>
+            Descreve a qualidade de vida no trabalho, particularmente
+            relacionado a exposição ao risco. Um clima inovador envolve 
+            as pessoas e as desafiam a enfrentarem riscos calculados.
+          </p>
+        </div>
+        <div class="feature col-md-4">
+          <div id="chart-row-cul" class="pb-2 d-flex justify-content-center"></div>
+          <h5 class="text-center">Comportamentos</h5>
+          <p>
+            Descreve como as pessoas agem a serviço da inovação.
+          </p>
+        </div>        
+        <div class="feature col-md-4">
+          <div id="chart-row-inf" class="pb-2 d-flex justify-content-center"></div>
+          <h5 class="text-center">Valores</h5>
+          <p>
+            Reflete onde a companhia coloca suas prioridades e gasta seus
+            recursos. Valores refletem menos o que a empresa diz e mais o
+            que ela faz. É onde seus executivos dedicam maior parte do seu 
+            tempo.
+          </p>
+          
+        </div>
+      </div>
+        <div class="row g-5 py-5">
+          <div class="feature col-md-4">
+            <div id="chart-row-est" class="pb-2 d-flex justify-content-center"></div>
+            <h5 class="text-center">Recursos</h5>
+            <p>
+              Refere-se ao capital humano, incluindo os campeões da inovação,
+              sistemas para acessar outros envolvidos na cadeia de valores.
+            </p>
+          </div>
+          <div class="feature col-md-4">
+            <div id="chart-row-rel" class="pb-2 d-flex justify-content-center"></div>
+            <h5 class="text-center">Processos</h5>
+            <p>
+              São as ferramentas e métodosusados para levar ideias ao
+              mercado. Como por exemplo: rápida prototipagem, design
+              thinking e teste de mercado.
+            </p>
+          </div>
+          <div class="feature col-md-4">
+            <div id="chart-row-pes" class="pb-2 d-flex justify-content-center"></div>
+            <h5 class="text-center">Sucesso</h5>
+            <p>
+              Descreve como as pessoas são recompensadas, como as metas são
+              mensuradas e como é o reconhecimento dos gestores, clientes e 
+              concorrência.
+            </p>
+            
+          </div>
+      </div>
+      <hr class="mb-5">
+      <!-- <h3 class="text-center">Quantitativo por </h5> -->
+      <div class="row g-5 py-5">
+        <div class="feature col-md-4">
+          <div id="chart-row-cargo" class="pb-2 d-flex justify-content-center"></div>
+          <h5 class="text-center">Cargo</h5>
+          <p>
+            Paragraph of text beneath the heading to explain the heading. We'll
+            add onto it with another sentence and probably just keep going until
+            we run out of words.
+          </p>
+        </div>
+        <div class="feature col-md-4">
+          <div id="chart-row-area" class="pb-2 d-flex justify-content-center "></div>
+          <h5 class="text-center">Area</h5>
+          <p>Paragraph of text beneath the heading to explain the heading. We'll
+            add onto it with another sentence and probably just keep going until
+            we run out of words.
+          </p>
+        </div>
+        <div class="feature col-md-4">
+          <div id="chart-row-esco" class="pb-2 d-flex justify-content-center "></div>
+          <h5 class="text-center">Escolaridade</h5>
+          <p>Paragraph of text beneath the heading to explain the heading. We'll
+            add onto it with another sentence and probably just keep going until
+            we run out of words.
+          </p>
+        </div>
+    </div>
+    <hr>
+      <div class="container text-center p-5">
+        <h2>Evolução da Inovação</h2>
+        <p class=" text-muted">É importante entender que os aspectos ligados à inovação, devem evoluir de maneira harmoniosa, para que o resultado final aconteça de forma eficiente. A eficiência da gestão da inovação será alcançado pela melhoria contínua e harmoniosa de cada uma destas dimensões.</p>
+      </div>
+
+      <hr>
+      <footer class=" text-muted text-center text-small">
+        <p class="mb-1">© 2022 Mensuração da Cultura de Inovação</p>
+        <ul class="list-inline">
+          <li class="list-inline-item"><a href="http://www.ufopa.edu.br/ufopa/">UFOPA</a></li>
+          <!-- <li class="list-inline-item"><a href="http://www.ufopa.edu.br/ctic/">CTIC</a></li>
+          <li class="list-inline-item"><a href="http://www.ufopa.edu.br/ait/">AIT</a></li> -->
+          <li class="list-inline-item"><a href="http://www.profnit.org.br/pt/sample-page/">PROFNIT</a></li>
+        </ul>
+      </footer>
+    </div>
+  </body>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.5.1.min.js') }}" ></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/select2.min.js') }}"></script>  
+  <script type="text/javascript" src="{{ url_for('static', filename='js/feather.min.js') }}"></script>  
+  <script type="text/javascript" src="{{ url_for('static', filename='js/d3.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/radar-chart.js') }}"></script>     
+  <script type="text/javascript" src="{{ url_for('static', filename='js/crossfilter.js') }}"></script>
+  <script type="text/javascript" src="{{ url_for('static', filename='js/dc.js') }}"></script>
+  <script>
+    var dadosUnidades = {{ data | tojson}}
+    var dadosGerais = {{ geral | tojson}}
+    var dadosCargo = {{ dados_cargo | tojson}}
+    var dadosArea = {{ dados_area | tojson}}
+    var dadosEsco = {{ dados_esco | tojson}}
+  </script>
+
+  <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+  <script>
+    feather.replace()
+  </script>
+</html>

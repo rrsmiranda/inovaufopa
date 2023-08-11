@@ -1,0 +1,21 @@
+<nav class="navbar navbar-expand-md navbar-light bg-light fixed-top">
+    <h5 class="my-0 mr-md-auto font-weight-normal">
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto text-dark text-decoration-none">
+        <img class="" src="{{ url_for('static', filename='img/logo.png') }}" alt="" width="36" height="40">
+        <span class="fs-4 mx-3">DIMENSUR</span>
+      </a>
+    </h5>
+    <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        <div class="navbar-nav ml-auto">
+          <a class="p-2 text-dark mr-2" href="/questionarios">Questionários</a>
+          <!-- <a class="p-2 text-dark" href="#">Referências</a>-->
+          <a class="p-2 text-dark mr-2" type="button" data-toggle="modal" data-target="#modalajuda">Ajuda</a> 
+          <a class="p-2 text-dark" href="/login">Entrar</a>
+          <!-- <a class="btn btn-outline-primary" href="#">Ver Artigo</a> -->
+        </div>
+    </div>
+</nav>

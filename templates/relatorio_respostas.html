@@ -1,0 +1,33 @@
+{% extends "admin.html" %}
+{% block body %}
+<h3>{{titulo}}</h3>
+<div class="py-3 table-responsive">
+    <table class="table table-striped table-sm table-headless">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>Ano</th>
+            <th>Questionário</th>
+            <th>Repostas</th>
+            <th>Prazo</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for item in list %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ item.ano }}</td>
+                <td>{{ item.titulo }}</td>
+                <td>{{ item.total }}</td>
+                <td>{{ item.prazo.strftime('%d/%m/%Y') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {%if not list %}
+    <div class="table-empty">
+        Nenhum resultado encontrado
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

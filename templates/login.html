@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="fabiano.nhoatto">
+    <link rel="icon" href="/docs/4.0/assets/img/favicons/favicon.ico">
+
+    <title>login</title>
+
+    <!-- Bootstrap core CSS -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/signin.css') }}">
+    
+  </head>
+
+  <body class="text-center">
+    <form class="form-signin" method="post" action="">
+      <a href="/">
+        <img class="mb-5" src="{{ url_for('static', filename='img/logo.png') }}" alt="" width="170" height="190">
+      </a>
+      {% if error %}
+      <div class="alert alert-danger" role="alert">
+        {{ error }}
+      </div>
+      {% endif %}
+
+      <label for="username" class="sr-only">Usuário</label>
+      <input type="text" class="form-control" placeholder="usuário" name="username" value="{{
+        request.form.username }}" required autofocus>
+
+      <label for="password" class="sr-only">Senha</label>
+      <input type="password" class="form-control" placeholder="senha" name="password" value="{{
+        request.form.password }}" required>
+      <br><br>
+     <!-- <div class="checkbox mb-3">
+        <label>
+          <input type="checkbox" value="remember-me"> Lembrar-me
+        </label>
+      </div> -->
+      <button class="btn btn-lg btn-primary btn-block" style="background: #7d61e8; border:none;" type="submit" value="Login">Entrar</button>
+      <p class="mt-5 mb-3 text-muted">&copy; 2022</p>
+    </form>
+  </body>
+</html>

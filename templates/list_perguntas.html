@@ -1,0 +1,34 @@
+{% extends "admin.html" %}
+{% block body %}
+    <h3>{{titulo}}</h3>
+    <div class="py-3 table-responsive">
+        <table class="table table-striped table-sm table-headless">
+            <thead>
+            <tr>
+                <th>#</th>
+                <th>Título</th>
+                <th>Questionário</th>
+                <th>Tipo</th>
+                <th>Data</th>
+            </tr>
+            </thead>
+            <tbody>
+                {% for item in list %}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ item.titulo }}</td>
+                    <td>{{ item.questionario.titulo }}</td>
+                    <td>{{ item.tipo }}</td>
+                    <td>{{ item.created.strftime('%d/%m/%Y') }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {%if not list %}
+        <div class="table-empty">
+            Nenhum resultado encontrado
+        </div>
+        {% endif %}
+    </div>
+    {% include "includes/pagination.html" %}
+{% endblock %}
